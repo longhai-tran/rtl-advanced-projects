@@ -1,0 +1,40 @@
+# ===== Vivado xsim artifacts =====
+xsim.dir/
+xvlog.pb
+xvlog.log
+xelab.pb
+xelab.log
+xsim.log
+xsim_*.log
+*.jou
+*.str
+webtalk/
+webtalk_*.jou
+webtalk_*.log
+.Xil/
+
+# ===== Vivado Project files =====
+*.xpr
+*.xci
+*.bit
+*.ltx
+*.dcp
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.srcs/
+vivado_*.jou
+vivado_*.log
+
+# ===== ModelSim artifacts =====
+work/
+transcript
+vsim.wlf
+*.vcd
+
+# ===== General =====
+*.bak
+*.tmp
+__pycache__/

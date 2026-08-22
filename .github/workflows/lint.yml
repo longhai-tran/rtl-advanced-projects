@@ -1,0 +1,60 @@
+# .github/workflows/lint.yml
+name: RTL Lint & Syntax Check
+
+on:
+  push:
+    branches: [ main, dev ]
+    paths: &rtl_paths ['**.v', '**.sv', '**.vh', '**.svh', '.github/workflows/lint.yml']
+  pull_request:
+    branches: [ main, dev ]
+    paths: *rtl_paths
+  workflow_dispatch:
+
+# Tự động hủy build cũ khi push commit mới lên cùng PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Tuân thủ nguyên tắc Least Privilege (Security)
+permissions:
+  contents: read
+
+jobs:
+  verilator-lint:
+    name: Verilator RTL Linting
+    runs-on: ubuntu-latest
+    # Dùng Docker Image chính thức (Nhanh ~5s, không cần apt-get update/install)
+    container:
+      image: verilator/verilator:latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Verilator Lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "=== Engine: $(verilator --version) ==="
+
+          # 1. Tự động thu thập thư mục include (-I<dir>)
+          INCLUDES=$(find . -type f \( -name "*.v" -o -name "*.sv" \) -not -path "*/.git/*" -exec dirname {} + | sort -u | sed 's/^/-I/')
+
+          # 2. Gom toàn bộ file RTL (bỏ qua testbenches *_tb.*)
+          RTL_FILES=$(find . -type f \( -name "*.v" -o -name "*.sv" \) -not -name "*_tb.*" -not -path "*/.git/*" | sort)
+
+          if [ -z "$RTL_FILES" ]; then
+            echo "ℹ️ No RTL files found."
+            exit 0
+          fi
+
+          # 3. Exec Linting (Verilator tự động nhận diện .sv / .v)
+          echo "Linting RTL files with includes: $INCLUDES"
+          for f in $RTL_FILES; do
+            echo "→ $f"
+            verilator --lint-only -Wall $INCLUDES "$f"
+          done
+
+          echo "✅ All RTL files passed Verilator lint check!"
+
+
