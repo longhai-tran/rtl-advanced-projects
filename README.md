@@ -17,9 +17,9 @@ rtl-advanced-projects/
 ├── 01_ip_blocks/
 │   ├── async_fifo_gray/          # Gray-pointer dual-clock FIFO        ✅ RTL + TB
 │   ├── axi4_lite_slave/          # AXI4-Lite register slave             🔄 In progress
-│   ├── i2c_master_core/          # I2C master with APB wrapper          🔄 In progress
+│   ├── i2c_master_core/          # I2C master with APB wrapper          ✅ RTL + TB
 │   ├── spi_flash_controller/     # SPI NOR Flash command controller     🔄 In progress
-│   └── apb_slave/                # APB peripheral slave                 📋 Planned
+│   └── apb_slave/                # APB4 register slave                  ✅ RTL + TB
 ├── 02_synthesis/                 # Vivado and Design Compiler flows      📋 Planned
 ├── 03_cdc_design/                # Pulse and handshake synchronizers     📋 Planned
 ├── 04_low_power/                 # Clock/power gating and multi-VT       📋 Planned
@@ -65,8 +65,8 @@ Each IP block follows a consistent internal structure:
 | 1 | `async_fifo_gray` | ✅ RTL + TB | Questa passed · xsim + lint gates remain |
 | 1 | `spi_flash_controller` | 🔄 In progress | Questa batch passed · xsim, lint, docs remain |
 | 1 | `axi4_lite_slave` | 🔄 In progress | RTL skeleton + partial register map exist |
-| 1 | `i2c_master_core` | 🔄 In progress | RTL compiles · TB `always assign` loop to fix |
-| 1 | `apb_slave` | 📋 Planned | Not started |
+| 1 | `i2c_master_core` | 🔄 In progress | APB + bus-level slave-model tests pass Questa and xsim |
+| 1 | `apb_slave` | ✅ RTL + TB | Questa and xsim pass 11/11 checks |
 | 2 | Synthesis flows | 📋 Planned | Vivado + DC scripts/reports after Phase 1 |
 | 3 | CDC library | 📋 Planned | Pulse sync + handshake sync not yet implemented |
 | 4 | Low-power examples | 📋 Planned | Clock/power gating + multi-VT material planned |
