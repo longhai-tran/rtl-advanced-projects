@@ -38,7 +38,9 @@ module i2c_master_apb #(
     input  wire        penable,
     input  wire        pwrite,
     input  wire [7:0]  paddr,
-    input  wire [31:0] pwdata,
+    // verilator lint_off UNUSEDSIGNAL
+    input  wire [31:0] pwdata,       // Bits [15:8] not used by current register map
+    // verilator lint_on UNUSEDSIGNAL
     output reg  [31:0] prdata,
     output wire        pready,       // Always 1 (zero-wait-state slave)
 
